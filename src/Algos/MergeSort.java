@@ -1,7 +1,6 @@
 package Algos;
 /**
- * 
- * @author AH0661942
+ *
  * There are two steps for merge sort.
  * 
  * 1. Divide
