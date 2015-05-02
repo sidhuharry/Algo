@@ -17,10 +17,9 @@ public class BinaryTrees {
 	public static void main(String args[]) {
 		// We will take an array and then insert into a Binary Tree one by one
 
-		// int a[] = { 76, 23, 64, 123, 6, 123, 76, 3, 6, 7, 353, 37, 43, 678,
-		// 23,
-		// 78, 934 };
-		int a[] = {76, 23, 64, 123, 6, 76};
+		 int a[] = { 76, 23, 64, 123, 6, 123, 76, 3, 6, 7, 353, 37, 43, 678,
+		 23,
+		 78, 934 };
 
 		BinaryTrees bt = new BinaryTrees();
 		BTNode root = null; // root points to null because tree is empty
@@ -45,11 +44,11 @@ public class BinaryTrees {
 			node = newnode; // assigning first node
 			return node;
 		} else {
-			if (data > node.data) {
-				node.r_ptr=insert(node.l_ptr, data);
+			if (data > node.data) { // data is greater than node then move to right side.
+				node.r_ptr=insert(node.r_ptr, data); // assign the r_ptr so move to the right side.
 				return node;
-			} else if (data <= node.data) {
-				node.l_ptr=insert(node.r_ptr, data);
+			} else if (data <= node.data) { // data is smaller than node then move to the left side
+				node.l_ptr=insert(node.l_ptr, data); // assign to l_ptr so that you can move to the left
 				return node;
 			}
 		}
@@ -74,12 +73,12 @@ public class BinaryTrees {
 	 */
 	public void viewTree(BTNode root) {
 		BTNode ptr = root;
-		if (ptr.l_ptr != null && ptr.r_ptr != null) {
-			System.out.println(ptr.data); // display the data of root
+		if (ptr!=null) {
+			System.out.println("|"+ptr.data+'|'); // display the data of root
 			viewTree(ptr.l_ptr); // move to left
 			viewTree(ptr.r_ptr); // move to right
 		} else {
-			System.out.println("---XX---");
+			System.out.println("X"); //NULL POINTER
 		}
 
 	}
