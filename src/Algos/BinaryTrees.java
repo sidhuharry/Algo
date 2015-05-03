@@ -4,6 +4,8 @@
 
 package Algos;
 
+import java.util.Scanner;
+
 class BTNode {
 
 	BTNode l_ptr;
@@ -17,7 +19,12 @@ public class BinaryTrees {
 	public static void main(String args[]) {
 		// We will take an array and then insert into a Binary Tree one by one
 
-		int a[] = { 76, 23, 64, 123, 6, 123, 76, 3, 6, 7, 353, 37, 43, 678, 23, 78, 934 };
+		int a[] = { 76, 23, 64, 123, 176, 100, 101, 55, 21 }; /*
+															 * , 123, 76, 3, 6,
+															 * 7, 353, 37, 43,
+															 * 678, 23, 78, 934
+															 * };
+															 */
 
 		BinaryTrees bt = new BinaryTrees();
 		BTNode root = null; // root points to null because tree is empty
@@ -30,7 +37,11 @@ public class BinaryTrees {
 		}
 		System.out.println(root);
 		bt.viewTree(root);
-
+		Scanner in = new Scanner(System.in);
+		System.out.println("enter node to delete");
+		int value = in.nextInt();
+		root = bt.deleteNode(root, root, value);
+		bt.viewTree(root);
 	}
 
 	/**
@@ -88,34 +99,64 @@ public class BinaryTrees {
 
 	}
 
-	public BTNode deleteNode(BTNode node, BTNode root, BTNode parent, int data) { // ptr
-																		// point
-																		// to
-																		// root
+	public BTNode deleteNode(BTNode node, BTNode root, int data) { // ptr
+																	// point
+																	// to
+																	// root
 		// while calling
 		// function
 		/*
 		 * There are 3 cases in deleting a node in BT 1. node with no kids 2.
 		 * node with one kids 3. node with two kids
 		 */
+		if (node == null) // exit condition
+			return root;
 		if (node.data == data) {
 			if (node.l_ptr == null && node.r_ptr == null) { // case 1
-				if(node==root) { //in case there is only one node in the tree
-					root=null;
+				if (node == root) { // in case there is only one node in the
+									// tree
+					root = null;
 					return root;
-				}
-				else
-					node=null;
-			}
-			if(node.l_ptr == null || node.r_ptr ==null) {
-				
+				} else
+					node = null;
+			} else if (node.l_ptr == null) { // that means the node has only one
+												// child which is on right side
+				BTNode min_node = minNode(node); // find the min node
+				node.data = min_node.data; // copy the data at present node
+				node.r_ptr = deleteNode(node.r_ptr, root, min_node.data); // delete
+																			// the
+																			// poor
+																			// min
+																			// node
+				return node;
+			} else if (node.r_ptr == null) {
+				BTNode min_node = minNode(node);
+				node.data = min_node.data;
+				node.l_ptr = deleteNode(node.l_ptr, root, min_node.data);
+				return node;
+			} else {
+				BTNode min_node = minNode(node);
+				node.data = min_node.data;
+				node.r_ptr = deleteNode(node.r_ptr, root, min_node.data);
 			}
 
-		} else if (data <= node.data) 
-			node.l_ptr=deleteNode(node.l_ptr, root, node, data);	
-		else if(data > node.data)
-			node.r_ptr=deleteNode(node.r_ptr, root, node, data);
-		
+		} else if (data <= node.data)
+			node.l_ptr = deleteNode(node.l_ptr, root, data);
+		else if (data > node.data)
+			node.r_ptr = deleteNode(node.r_ptr, root, data);
+
+		return node;
+	}
+
+	/*
+	 * Find the minimum node in the right subtree of node to be deleted.
+	 */
+	public BTNode minNode(BTNode node) {
+		if (node.r_ptr != null)
+			node = node.r_ptr; // go one right!
+		while (node.l_ptr != null) {
+			node = node.l_ptr;
+		}
 		return node;
 	}
 
