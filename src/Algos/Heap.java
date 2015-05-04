@@ -7,6 +7,7 @@
 
 package Algos;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Heap {
@@ -46,17 +47,19 @@ public class Heap {
 
 	public int[] deleteHeap(int data, int heap[]) {
 		int i = 1;
+		int[] newHeap = new int[heap.length-1];
 		while (i < heap.length) {
 			if (heap[i] == data) {
 				int x = heap[i];
 				heap[i]=heap[heap.length-1];
-				heap[heap.length-1] = 0;
-				heap = heapify(heap, heap.length - 2);
+				System.arraycopy(heap, 0, newHeap, 0, newHeap.length);
+				newHeap = heapify(newHeap, newHeap.length-1);
+				return newHeap;
 			}
 			i++;
 		}
 
-		return heap;
+		return newHeap;
 	}
 
 	public int[] heapify(int heap[], int lastIndex) {
