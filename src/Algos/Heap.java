@@ -7,7 +7,6 @@
 
 package Algos;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Heap {
@@ -18,7 +17,7 @@ public class Heap {
 		// transfer a into heap and display it
 
 		Heap h = new Heap();
-		int heap[] = h.buildHeap(a); 
+		int heap[] = h.buildHeap(a);
 		for (int value : heap) {
 			System.out.println(value);
 		}
@@ -30,6 +29,7 @@ public class Heap {
 		for (int value : newHeap) {
 			System.out.println(value);
 		}
+
 	}
 
 	/*
@@ -37,44 +37,59 @@ public class Heap {
 	 */
 	public int[] buildHeap(int a[]) {
 		int heap[] = new int[a.length];
-		heap[0] = 0;
-		for (int i = 1; i < a.length; i++) {
+		for (int i = 0; i < a.length; i++) {
 			heap[i] = a[i];
-			heap = heapify(heap, i);
+			int kid = i;
+			int parent = getParent(kid);
+			if (parent < 0)
+				parent = 0;
+			while (parent >= 0 && heap[parent] <= heap[kid]) {
+				int x = heap[parent];
+				heap[parent] = heap[kid];
+				heap[kid] = x;
+				kid = parent;
+				parent = getParent(parent);
+			}
 		}
 		return heap;
 	}
 
 	public int[] deleteHeap(int data, int heap[]) {
 		int i = 1;
-		int[] newHeap = new int[heap.length-1];
+		int[] newHeap = new int[heap.length - 1];
 		while (i < heap.length) {
 			if (heap[i] == data) {
-				int x = heap[i];
-				heap[i]=heap[heap.length-1];
+				heap[i] = heap[heap.length - 1];
 				System.arraycopy(heap, 0, newHeap, 0, newHeap.length);
-				newHeap = heapify(newHeap, newHeap.length-1);
+				newHeap = heapify(newHeap, 0);
 				return newHeap;
-			}
-			i++;
+			} else
+				i++;
 		}
 
-		return newHeap;
-	}
-
-	public int[] heapify(int heap[], int lastIndex) {
-		int kid = lastIndex;
-		int parent = kid / 2;
-		while (heap[parent] < heap[kid] && parent != 0) {
-			if (kid != 0) {
-				int x = heap[kid / 2];
-				heap[kid / 2] = heap[kid];
-				heap[kid] = x;
-				kid = kid / 2;
-				parent = kid / 2;
-			}
-		}
 		return heap;
 	}
 
+	public int[] heapify(int a[], int index) { // index is the root when we
+												// first time call this function
+		int largest = index; // parent
+		int leftKid = (2 * index) + 1;
+		int rightKid = (2 * index) + 2;
+		if (leftKid < a.length && a[largest] <= a[leftKid]) {
+			largest = leftKid;
+		} else if (rightKid < a.length && a[largest] <= a[rightKid]) {
+			largest = rightKid;
+		}
+		if (index != largest) {
+			int x = a[largest];
+			a[largest] = a[index];
+			a[index] = x;
+			heapify(a, largest);
+		}
+		return a;
+	}
+
+	public int getParent(int kid) {
+		return (kid % 2 == 0) ? (kid/2) - 1 : (kid/2);
+	}
 }
