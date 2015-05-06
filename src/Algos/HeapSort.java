@@ -19,7 +19,7 @@ public class HeapSort {
 		int sortedHeap[] = new int[heap.length];
 		Heap h = new Heap();
 		int i = 0;
-		while (heap.length > 1 && i < sortedHeap.length) {
+		while (heap.length >= 1 && i < sortedHeap.length) {
 			sortedHeap[i++] = heap[0];
 			heap = h.deleteHeap(heap[0], heap);
 		}
