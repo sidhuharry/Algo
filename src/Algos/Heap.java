@@ -12,22 +12,25 @@ import java.util.Scanner;
 public class Heap {
 
 	public static void main(String args[]) {
-		int a[] = { 0, 12, 57, 19, 87, 15, 44, 23 };
+		int a[] = { 23 };
 
 		// transfer a into heap and display it
 
 		Heap h = new Heap();
 		int heap[] = h.buildHeap(a);
 		for (int value : heap) {
-			System.out.println(value);
+			System.out.print(value + ", ");
 		}
 
 		Scanner in = new Scanner(System.in);
-		System.out.println("Enter node which you want to delete");
-		int data = in.nextInt();
-		int[] newHeap = h.deleteHeap(data, heap);
-		for (int value : newHeap) {
-			System.out.println(value);
+
+		while (true) {
+			System.out.println("Enter node which you want to delete");
+			int data = in.nextInt();
+			heap = h.deleteHeap(data, heap);
+			for (int value : heap) {
+				System.out.print(value + ", ");
+			}
 		}
 
 	}
@@ -55,18 +58,21 @@ public class Heap {
 	}
 
 	public int[] deleteHeap(int data, int heap[]) {
-		int i = 1;
-		int[] newHeap = new int[heap.length - 1];
-		while (i < heap.length) {
-			if (heap[i] == data) {
-				heap[i] = heap[heap.length - 1];
-				System.arraycopy(heap, 0, newHeap, 0, newHeap.length);
-				newHeap = heapify(newHeap, 0);
-				return newHeap;
-			} else
-				i++;
-		}
-
+		if (heap.length > 1) {
+			int i = 0;
+			int[] newHeap = new int[heap.length - 1];
+			while (i < heap.length) {
+				if (heap[i] == data) {
+					heap[i] = heap[heap.length - 1];
+					System.arraycopy(heap, 0, newHeap, 0, newHeap.length);
+					newHeap = heapify(newHeap, 0);
+					return newHeap;
+				} else
+					i++;
+			}
+		} else
+			return heap;
+		
 		return heap;
 	}
 
@@ -77,19 +83,20 @@ public class Heap {
 		int rightKid = (2 * index) + 2;
 		if (leftKid < a.length && a[largest] <= a[leftKid]) {
 			largest = leftKid;
-		} else if (rightKid < a.length && a[largest] <= a[rightKid]) {
+		}
+		if (rightKid < a.length && a[largest] <= a[rightKid]) {
 			largest = rightKid;
 		}
 		if (index != largest) {
 			int x = a[largest];
 			a[largest] = a[index];
 			a[index] = x;
-			heapify(a, largest);
+			return heapify(a, largest);
 		}
 		return a;
 	}
 
 	public int getParent(int kid) {
-		return (kid % 2 == 0) ? (kid/2) - 1 : (kid/2);
+		return (kid % 2 == 0) ? (kid / 2) - 1 : (kid / 2);
 	}
 }
