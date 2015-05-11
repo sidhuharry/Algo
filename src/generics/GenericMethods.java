@@ -1,6 +1,5 @@
 package generics;
 /**
- * @author AH0661942
  * Similar to generic classes, scope is limited to methods.
  * Can be class constructor also. static is allowed
  *
